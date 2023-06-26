@@ -43,6 +43,8 @@ describe OmniAuth::Strategies::Line do
   describe 'info' do
     before do
       allow(subject).to receive(:raw_info).and_return(raw_info_hash)
+      allow(subject).to receive(:id_token).and_return(jwt_token)
+      allow(subject).to receive(:client_secret).and_return('123')
     end
 
     it 'should returns the name' do
@@ -58,7 +60,7 @@ describe OmniAuth::Strategies::Line do
     end
 
     it 'should returns the email' do
-      expect(subject.info[:email]).to eq(raw_info_hash['email'])
+      expect(subject.info[:email]).to eq('foo@bar.com')
     end
   end
 
@@ -86,7 +88,11 @@ def raw_info_hash
     'uid'           => 'hoge',
     'displayName'   => 'Foo Bar',
     'pictureUrl'    => 'http://xxx.com/aaa.jpg',
-    'statusMessage' => 'Developer',
-    'email'         => 'foo@bar.com'
+    'statusMessage' => 'Developer'
   }
+end
+
+# JWT.encode({ email: 'foo@bar.com' }, '123')
+def jwt_token
+  'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZvb0BiYXIuY29tIn0.4GMLXMtSBKv_Xo1bTjU8cOomTfzcgBoVapHQNR2irAI'
 end

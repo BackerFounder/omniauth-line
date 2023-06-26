@@ -45,9 +45,19 @@ module OmniAuth
         raise ::Timeout::Error
       end
 
-      def email
-        JWT.decode(access_token.params['id_token'], options['client_secret']).first&.dig('email')
-      end
+      private
+
+        def id_token
+          access_token.params['id_token']
+        end
+
+        def client_secret
+          options['client_secret']
+        end
+
+        def email
+          JWT.decode(id_token, client_secret).first&.dig('email')
+        end
     end
   end
 end
