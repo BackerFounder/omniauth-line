@@ -34,7 +34,7 @@ module OmniAuth
           name:        raw_info['displayName'],
           image:       raw_info['pictureUrl'],
           description: raw_info['statusMessage'],
-          email: raw_info['email']
+          email:       email
         }
       end
 
@@ -45,6 +45,9 @@ module OmniAuth
         raise ::Timeout::Error
       end
 
+      def email
+        JWT.decode(access_token.params['id_token'], options['client_secret']).first&.dig('email')
+      end
     end
   end
 end
