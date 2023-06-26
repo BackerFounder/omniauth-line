@@ -56,6 +56,10 @@ describe OmniAuth::Strategies::Line do
     it 'should returns the description' do
       expect(subject.info[:description]).to eq(raw_info_hash['statusMessage'])
     end
+
+    it 'should returns the email' do
+      expect(subject.info[:email]).to eq(raw_info_hash['email'])
+    end
   end
 
   describe 'request_phase' do
@@ -82,6 +86,7 @@ def raw_info_hash
     'uid'           => 'hoge',
     'displayName'   => 'Foo Bar',
     'pictureUrl'    => 'http://xxx.com/aaa.jpg',
-    'statusMessage' => 'Developer'
+    'statusMessage' => 'Developer',
+    'email'         => 'foo@bar.com'
   }
 end
